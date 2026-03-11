@@ -11,7 +11,7 @@
           <li class="nav-item">
             <a class="nav-link position-relative">
               Voir mon panier
-              <span class="position-absolute top-0 start-100 translate-middle badge bg-dark">0</span>
+              <span class="position-absolute top-0 start-100 translate-middle badge bg-dark">{{cartItems}}</span>
             </a>
           </li>
         </ul>
@@ -27,78 +27,19 @@
       (mouseleave)="toggleIsHovered($event)"
       >
         <h1>Bienvenue sur Zenika Ecommerce</h1>
-        <p>Votre panier s'élève à 0 €</p>
+        <p>Votre panier s'élève à {{ total }} €</p>
         <p class="mb-0"><a class="btn btn-primary btn-large">Voir mon panier</a></p>
       </header>
 
       <h2 class="h4">Catalogue</h2>
 
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-        <div class="col">
-          <!-- Extract to "src/app/product/product-card.html" -->
-          <div class="card h-100 text-center">
-            <img class="card-img-top" src="/assets/coding-the-welsch.jpg" alt="Product image" />
-            <div class="card-header">
-              <small>Tee-shirt col rond - Homme</small>
-            </div>
-            <div class="card-body">
-              <h3 class="h6 card-title">
-                <a class="card-link">Coding the welsch</a>
-              </h3>
-              <p class="card-text">20 €</p>
-              <button class="btn btn-primary">Ajoutez au panier</button>
-            </div>
-          </div>
-          <!-- End of Extract to "src/app/product/product-card.html" -->
-        </div>
-
-        <div class="col">
-          <div class="card h-100 text-center text-bg-warning">
-            <img class="card-img-top" src="/assets/coding-the-world.jpg" alt="Product image" />
-            <div class="card-header">
-              <small>Tee-shirt col rond - Homme</small>
-            </div>
-            <div class="card-body">
-              <h3 class="h6 card-title">
-                <a class="card-link">Coding the world</a>
-              </h3>
-              <p class="card-text">18 €</p>
-              <button class="btn btn-primary">Ajoutez au panier</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card h-100 text-center">
-            <img class="card-img-top" src="/assets/coding-the-stars.jpg" alt="Product image" />
-            <div class="card-header">
-              <small>Tee-shirt col rond - Femme</small>
-            </div>
-            <div class="card-body">
-              <h3 class="h6 card-title">
-                <a class="card-link">Duck Vador</a>
-              </h3>
-              <p class="card-text">21 €</p>
-              <button class="btn btn-primary">Ajoutez au panier</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card h-100 text-center">
-            <img class="card-img-top" src="/assets/coding-the-snow.jpg" alt="Product image" />
-            <div class="card-header">
-              <small>Tee-shirt col rond - Femme</small>
-            </div>
-            <div class="card-body">
-              <h3 class="h6 card-title">
-                <a class="card-link">Coding the snow</a>
-              </h3>
-              <p class="card-text">19 €</p>
-              <button class="btn btn-primary">Ajoutez au panier</button>
-            </div>
-          </div>
-        </div>
+        <app-product-card class="col" [product]="products[0]" (addToBasket)="updateTotal($event)"></app-product-card>
+        <app-product-card class="col" [product]="products[1]"(addToBasket)="updateTotal($event)"></app-product-card>
+        <app-product-card class="col" [product]="products[2]" (addToBasket)="updateTotal($event)"></app-product-card>
+        <app-product-card class="col" [product]="products[3]" (addToBasket)="updateTotal($event)"></app-product-card>
+    
+      
       </div>
     </main>
     <!-- End of Extract to "src/app/app.html" -->
