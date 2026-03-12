@@ -1,23 +1,15 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { App } from './app';
 import { ProductCard } from './product-card/product-card';
 
-describe('App (second approach - allowing unknown HTML elements)', () => {
+describe('App (first approach - with explicit dependency declaration)', () => {
   let fixture: ComponentFixture<App>;
   let component: App;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [App],
-    }).overrideComponent(App, {
-      remove: {
-        imports: [ProductCard],
-      },
-      add: {
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      },
     });
 
     fixture = TestBed.createComponent(App);
@@ -30,12 +22,13 @@ describe('App (second approach - allowing unknown HTML elements)', () => {
 
   it('should display the products', () => {
     fixture.detectChanges();
-    const productDebugElements = fixture.debugElement.queryAll(By.css('app-product-card'));
+    const productDebugElements = fixture.debugElement.queryAll(By.directive(ProductCard));
 
     expect(productDebugElements).toHaveLength(4);
 
     productDebugElements.forEach((productDebugElement, index) => {
-      expect(productDebugElement.properties['product']).toBe(component.products[index]);
+      const productComponent: ProductCard = productDebugElement.componentInstance;
+      expect(productComponent.product()).toBe(component.products[index]);
     });
   });
 
@@ -44,16 +37,14 @@ describe('App (second approach - allowing unknown HTML elements)', () => {
     // Given
     component.total = 99;
     fixture.detectChanges();
-
     const header = (fixture.nativeElement as HTMLElement).querySelector('header');
     expect(header?.textContent).toContain(99);
-
     // When
-    const productDebugElements = fixture.debugElement.queryAll(By.css('app-product-card'));
-    productDebugElements[1].triggerEventHandler('addToBasket', component.products[1]);
+    const productDebugElements = fixture.debugElement.queryAll(By.directive(ProductCard));
+    const productComponent: ProductCard = productDebugElements[1].componentInstance;
+    productComponent.addToBasket.emit(productComponent.product());
     fixture.detectChanges();
-
-    // Then
+    //Then;
     expect(header?.textContent).toContain(99 + component.products[1].price);
   });
 

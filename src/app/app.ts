@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ProductCard } from './product-card/product-card';
 import { Product } from './product-card/product';
@@ -14,8 +14,8 @@ export class App {
   protected readonly title = 'Zenika Shop'; //signal('zenika-ng-website');
   total = 0;
   cartItems = 0;
-  toggleIsHovered($event: any): void {
-    console.log($event);
+
+  toggleIsHovered(): void {
     this.isHovered = !this.isHovered;
   }
 
