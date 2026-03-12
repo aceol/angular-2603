@@ -28,14 +28,14 @@ describe('App (first approach - with explicit dependency declaration)', () => {
 
     productDebugElements.forEach((productDebugElement, index) => {
       const productComponent: ProductCard = productDebugElement.componentInstance;
-      expect(productComponent.product()).toBe(component.products[index]);
+      expect(productComponent.product()).toBe(component.products()[index]);
     });
   });
 
   // ----- DOM Testing (the hard way) -----
   it('should update the total when a product emits the "addToBasket" event', () => {
     // Given
-    component.total = 99;
+    component.total.set(99);
     fixture.detectChanges();
     const header = (fixture.nativeElement as HTMLElement).querySelector('header');
     expect(header?.textContent).toContain(99);
@@ -45,18 +45,18 @@ describe('App (first approach - with explicit dependency declaration)', () => {
     productComponent.addToBasket.emit(productComponent.product());
     fixture.detectChanges();
     //Then;
-    expect(header?.textContent).toContain(99 + component.products[1].price);
+    expect(header?.textContent).toContain(99 + component.products()[1].price);
   });
 
   // ----- Class Testing (the easy way) -----
   it('should update the total when "updateTotal" class method is called', () => {
     // Given
-    component.total = 99;
+    component.total.set(99);
 
     // When
-    component.updateTotal(component.products[1]);
+    component.updateTotal(component.products()[1]);
 
     // Then
-    expect(component.total).toBe(99 + component.products[1].price);
+    expect(component.total()).toBe(99 + component.products()[1].price);
   });
 });

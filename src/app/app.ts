@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, computed, OnInit, Signal, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ProductCard } from './product-card/product-card';
 import { Product } from './product-card/product';
@@ -12,25 +12,35 @@ import { Product } from './product-card/product';
 export class App {
   isHovered = false;
   protected readonly title = 'Zenika Shop'; //signal('zenika-ng-website');
-  total = 0;
-  cartItems = 0;
+  total = signal(0);
+  cartItems = signal(0);
 
   toggleIsHovered(): void {
     this.isHovered = !this.isHovered;
   }
 
   updateTotal(product: Product) {
-    product.stock--;
-    this.total += product.price;
-    this.cartItems++;
+    this.total.update((price) => price + product.price);
+    this.cartItems.update((nbItemsInCart) => ++nbItemsInCart);
+
+    this.products.update((products: Product[]) => {
+      return products.map((currentProduct: Product) => {
+        if (currentProduct.id === product.id) {
+          return { ...product, stock: product.stock - 1 } as Product;
+        } else {
+          return currentProduct;
+        }
+      });
+    });
   }
 
-  get hasProductsInStock(): boolean {
-    //return this.products.reduce((stock, product) => product.stock + stock, 0) > 0;
-    return this.products.some((product) => product.stock > 0);
-  }
+  hasProductsInStock = computed(() => this.products().some((product) => product.stock > 0));
 
-  products = [
+  // get hasProductsInStock(): Signal<boolean> {
+  //   return computed(() => this.products().some((product) => product.stock > 0));
+  // }
+
+  products = signal<Product[]>([
     {
       id: 'welsch',
       title: 'Coding the welsch',
@@ -63,5 +73,5 @@ export class App {
       price: 19,
       stock: 2,
     },
-  ];
+  ]);
 }
