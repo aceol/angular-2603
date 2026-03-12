@@ -20,8 +20,14 @@ export class App {
   }
 
   updateTotal(product: Product) {
+    product.stock--;
     this.total += product.price;
     this.cartItems++;
+  }
+
+  get hasProductsInStock(): boolean {
+    //return this.products.reduce((stock, product) => product.stock + stock, 0) > 0;
+    return this.products.some((product) => product.stock > 0);
   }
 
   products = [

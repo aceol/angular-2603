@@ -13,12 +13,12 @@
           <span class="position-absolute top-0 start-100 translate-middle badge bg-dark">{{
             cartItems
             }}</span>
-          </a>
-          </li>
-          </ul>
-          </div>
-          </nav>
-          <!-- End of Extract to "src/app/menu/menu.html" -->
+        </a>
+        </li>
+        </ul>
+        </div>
+        </nav>
+        <!-- End of Extract to "src/app/menu/menu.html" -->
 
 <main class="py-4 container">
   <header class="p-4 mb-4 rounded-3" [class.bg-info]="isHovered" (mouseenter)="toggleIsHovered()" (mouseleave)="toggleIsHovered()">
@@ -30,9 +30,14 @@
   <h2 class="h4">Catalogue</h2>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
-    <app-product-card class="col" [product]="products[0]" (addToBasket)="updateTotal($event)"></app-product-card>
-    <app-product-card class="col" [product]="products[1]" (addToBasket)="updateTotal($event)"></app-product-card>
-    <app-product-card class="col" [product]="products[2]" (addToBasket)="updateTotal($event)"></app-product-card>
-    <app-product-card class="col" [product]="products[3]" (addToBasket)="updateTotal($event)"></app-product-card>
+    @if(hasProductsInStock) {
+    @for(product of products; track product.id) {
+    @if(product.stock > 0){
+    <app-product-card class="col" [product]="product" (addToBasket)="updateTotal($event)"></app-product-card>
+    }
+    }
+    } @else {
+    <span class="text-secondary">Désolé, notre stock est vide !</span>
+    }
   </div>
-  </main>
+</main>
