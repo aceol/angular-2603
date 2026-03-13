@@ -109,7 +109,7 @@ describe('App', () => {
     // Then
     const { id, title, price } = component.products()[0];
     expect(catalogService.decreaseStock).toHaveBeenCalledWith(id);
-    expect(basketService.addItem).toHaveBeenCalledWith({ id, title, price });
+    expect(basketService.addItem).toHaveBeenCalledWith(id);
   });
 
 });

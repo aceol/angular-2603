@@ -1,6 +1,7 @@
 import { effect, Injectable, signal } from '@angular/core';
 import { Product } from '../product/product';
 import { CatalogService } from './catalog.service';
+import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class CatalogStubService implements Partial<CatalogService> {
@@ -11,6 +12,10 @@ export class CatalogStubService implements Partial<CatalogService> {
   ]);
 
   hasProductsInStock = signal<boolean>(true);
+
+  fetchProducts(): Observable<Product[]> {
+    return of(this.products());
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
   decreaseStock(productId: string) {}

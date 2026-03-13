@@ -4,7 +4,6 @@ import { Product } from './product/product';
 import { CatalogService } from './catalog/catalog.service';
 import { BasketService } from './basket/basket.service';
 import { APP_TITLE } from './app.token';
-import { BasketItem } from './basket/basket-item';
 import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 
 @Component({
@@ -18,6 +17,11 @@ export class App {
   catalogService = inject(CatalogService);
   basketService = inject(BasketService);
   title = inject(APP_TITLE);
+
+  constructor() {
+    this.catalogService.fetchProducts().subscribe();
+    this.basketService.fetchBasket().subscribe();
+  }
 
   toggleIsHovered(): void {
     this.isHovered = !this.isHovered;
@@ -36,8 +40,9 @@ export class App {
   }
 
   updateTotal({id, title, price}: Product) {
-    this.catalogService.decreaseStock(id);
-    this.basketService.addItem({id, title, price} as BasketItem);
+    this.basketService.addItem(id).subscribe(
+         () => this.catalogService.decreaseStock(id)
+    );
   }
 
   get hasProductsInStock(): Signal<boolean> {
