@@ -1,13 +1,13 @@
 <div class="card h-100 text-center" [class.text-bg-warning]="product().stock == 1">
   <img class="card-img-top" src="{{ product().photo }}" alt="Product image" />
   <div class="card-header">
-    <small>{{ product().title }}</small>
+    <small>{{ product().title | uppercase}}</small>
   </div>
   <div class="card-body">
     <h3 class="h6 card-title">
       <a class="card-link">{{ product().description }}</a>
     </h3>
-    <p class="card-text">{{ product().price }} €</p>
+    <p class="card-text">{{ product().price | currency}}</p>
     <button class="btn btn-primary" (click)="addToBasket.emit(product())">Ajoutez au panier</button>
   </div>
 </div>
